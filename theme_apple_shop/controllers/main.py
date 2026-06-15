@@ -116,15 +116,6 @@ class AppleShop(WebsiteSaleComboConfiguratorController, WebsiteSaleProductConfig
         if category and category.exists():
             return self._render_category_landing(category)
 
-        # Plain /shop with no filter → homepage landing
-        if (not category and not search
-                and not min_price and not max_price and not page):
-            mac_root = request.env.ref(
-                'theme_apple_shop.categ_mac', raise_if_not_found=False
-            )
-            if mac_root:
-                return self._render_category_landing(mac_root, page_title='極電資訊商店', is_homepage=True)
-
         return super().shop(
             page=page, category=category, search=search,
             min_price=min_price, max_price=max_price, ppg=ppg, **post,
