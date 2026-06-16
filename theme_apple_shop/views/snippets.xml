@@ -7,11 +7,15 @@
         <field name="type">qweb</field>
         <field name="key">theme_apple_shop.s_apple_categ_carousel</field>
         <field name="arch" type="xml">
-            <section class="s_apple_categ_carousel pt-3 pb-5">
+            <section class="s_apple_categ_carousel pt-3 pb-5"
+                     data-snippet="s_apple_categ_carousel"
+                     data-name="分類輪播"
+                     data-categ-id="0"
+                     data-layout="swiper"
+                     data-slides-per-view="3"
+                     data-autoplay-delay="0">
                 <div class="container">
-                    <div class="apple-categ-carousel-wrapper"
-                         data-categ-id="0"
-                         data-snippet="s_apple_categ_carousel">
+                    <div class="apple-categ-carousel-wrapper">
                         <!-- Static preview shown in editor; replaced by JS in view mode -->
                         <div class="models-track-wrap">
                             <div class="models-track">
@@ -247,6 +251,43 @@
         </field>
     </record>
 
+    <!-- ── Categ Carousel editor option panel ────────────────────────────── -->
+    <template id="s_apple_categ_carousel_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-js="AppleCategCarousel" data-selector=".s_apple_categ_carousel">
+                <we-select string="版面配置" data-attribute-name="layout">
+                    <we-button data-select-data-attribute="swiper">輪播滾動</we-button>
+                    <we-button data-select-data-attribute="grid">格狀排列</we-button>
+                </we-select>
+                <we-select string="每行欄數" data-attribute-name="slidesPerView">
+                    <we-button data-select-data-attribute="2">2 欄</we-button>
+                    <we-button data-select-data-attribute="3">3 欄</we-button>
+                    <we-button data-select-data-attribute="4">4 欄</we-button>
+                </we-select>
+                <we-select string="自動播放" data-attribute-name="autoplayDelay">
+                    <we-button data-select-data-attribute="0">關閉</we-button>
+                    <we-button data-select-data-attribute="3000">3 秒</we-button>
+                    <we-button data-select-data-attribute="5000">5 秒</we-button>
+                    <we-button data-select-data-attribute="8000">8 秒</we-button>
+                </we-select>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ── Register categ carousel in editor panel (Products group) ─────── -->
+    <record id="s_apple_categ_carousel_panel" model="ir.ui.view">
+        <field name="name">Apple Categ Carousel Panel Registration</field>
+        <field name="type">qweb</field>
+        <field name="inherit_id" ref="website_sale.snippets"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-snippet='website_sale.s_dynamic_snippet_products']" position="before">
+                <t t-snippet="theme_apple_shop.s_apple_categ_carousel"
+                   string="分類輪播"
+                   group="products"/>
+            </xpath>
+        </field>
+    </record>
+
     <!-- ── Register categ nav in editor panel (Products group) ───────────── -->
     <record id="s_apple_categ_nav_panel" model="ir.ui.view">
         <field name="name">Apple Categ Nav Panel Registration</field>
@@ -268,11 +309,15 @@
         <field name="inherit_id" ref="website_sale.s_dynamic_snippet_products"/>
         <field name="arch" type="xml">
             <xpath expr="//t[@t-call='website.s_dynamic_snippet_template']" position="replace">
-                <section class="s_apple_categ_carousel pt-3 pb-5">
+                <section class="s_apple_categ_carousel pt-3 pb-5"
+                         data-snippet="s_apple_categ_carousel"
+                         data-name="分類輪播"
+                         data-categ-id="0"
+                         data-layout="swiper"
+                         data-slides-per-view="3"
+                         data-autoplay-delay="0">
                     <div class="container">
-                        <div class="apple-categ-carousel-wrapper"
-                             data-categ-id="0"
-                             data-snippet="s_apple_categ_carousel">
+                        <div class="apple-categ-carousel-wrapper">
                             <!-- Static preview shown in editor; replaced by JS in view mode -->
                             <div class="models-track-wrap">
                                 <div class="models-track">

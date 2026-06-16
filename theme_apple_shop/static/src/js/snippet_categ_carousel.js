@@ -1,5 +1,4 @@
 /** @odoo-module **/
-import { registry } from "@web/core/registry";
 import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.AppleCategCarousel = publicWidget.Widget.extend({
@@ -7,10 +6,8 @@ publicWidget.registry.AppleCategCarousel = publicWidget.Widget.extend({
     disabledInEditableMode: true,
 
     _detectCategId(wrapper) {
-        // Explicit override on the element takes priority
         const explicit = wrapper.dataset.categId;
         if (explicit && explicit !== '0') return explicit;
-        // Auto-detect from /shop/category/<slug>-<id> URL pattern
         const match = window.location.pathname.match(/\/shop\/category\/[^/]+-(\d+)/);
         if (match) return match[1];
         return '0';
@@ -24,17 +21,42 @@ publicWidget.registry.AppleCategCarousel = publicWidget.Widget.extend({
             .then(r => r.text())
             .then(html => {
                 wrapper.innerHTML = html;
-                this._initCarousel();
+                // Data attrs now live on the section (this.el)
+                this._applyLayout(this.el, wrapper);
             });
         return this._super(...arguments);
     },
 
-    _initCarousel() {
-        const track = this.el.querySelector('.models-track');
-        const prevBtn = this.el.querySelector('.track-prev');
-        const nextBtn = this.el.querySelector('.track-next');
-        const thumb = this.el.querySelector('.models-scrollbar-thumb');
-        const bar = this.el.querySelector('.models-scrollbar');
+    _applyLayout(section, wrapper) {
+        const layout = section.dataset.layout || 'swiper';
+        const slidesPerView = parseInt(section.dataset.slidesPerView || '3', 10);
+        const delay = parseInt(section.dataset.autoplayDelay || '0', 10);
+        const track = wrapper.querySelector('.models-track');
+        if (!track) return;
+
+        if (layout === 'grid') {
+            track.style.display = 'grid';
+            track.style.gridTemplateColumns = `repeat(${slidesPerView}, 1fr)`;
+            track.style.gap = '24px';
+            track.style.overflowX = 'unset';
+            // 隱藏輪播按鈕和 scrollbar
+            const prev = wrapper.querySelector('.track-prev');
+            const next = wrapper.querySelector('.track-next');
+            const bar  = wrapper.querySelector('.models-scrollbar');
+            if (prev) prev.style.display = 'none';
+            if (next) next.style.display = 'none';
+            if (bar)  bar.style.display  = 'none';
+        } else {
+            this._initSwiper(wrapper, delay);
+        }
+    },
+
+    _initSwiper(wrapper, delay) {
+        const track = wrapper.querySelector('.models-track');
+        const prevBtn = wrapper.querySelector('.track-prev');
+        const nextBtn = wrapper.querySelector('.track-next');
+        const thumb = wrapper.querySelector('.models-scrollbar-thumb');
+        const bar = wrapper.querySelector('.models-scrollbar');
 
         if (!track) return;
 
@@ -71,6 +93,17 @@ publicWidget.registry.AppleCategCarousel = publicWidget.Widget.extend({
             document.addEventListener('mouseup', () => {
                 dragging = false; thumb.classList.remove('dragging');
             });
+        }
+
+        // 自動播放
+        if (delay > 0) {
+            const cards = track.querySelectorAll('.model-card');
+            if (!cards.length) return;
+            let idx = 0;
+            setInterval(() => {
+                idx = (idx + 1) % cards.length;
+                cards[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+            }, delay);
         }
     },
 });

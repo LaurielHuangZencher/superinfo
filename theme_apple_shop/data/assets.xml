@@ -118,4 +118,10 @@
         <field name="bundle">web.assets_frontend</field>
         <field name="path">theme_apple_shop/static/src/js/snippet_categ_carousel.js</field>
     </record>
+
+    <record id="asset_snippet_categ_carousel_option_js" model="ir.asset">
+        <field name="name">Apple Shop Categ Carousel Option JS</field>
+        <field name="bundle">web_editor.assets_snippets_menu</field>
+        <field name="path">theme_apple_shop/static/src/js/snippet_categ_carousel_option.js</field>
+    </record>
 </odoo>

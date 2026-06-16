@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="theme_apple_shop.s_apple_categ_carousel_option">
+
+        <we-select string="版面配置"
+                   data-attribute-name="layout"
+                   data-select-data-attribute="layout">
+            <we-button data-select-data-attribute="swiper">輪播滾動</we-button>
+            <we-button data-select-data-attribute="grid">格狀排列</we-button>
+        </we-select>
+
+        <we-select string="每行欄數"
+                   data-attribute-name="slidesPerView"
+                   data-select-data-attribute="slidesPerView">
+            <we-button data-select-data-attribute="2">2 欄</we-button>
+            <we-button data-select-data-attribute="3">3 欄</we-button>
+            <we-button data-select-data-attribute="4">4 欄</we-button>
+        </we-select>
+
+        <we-select string="自動播放"
+                   data-attribute-name="autoplayDelay"
+                   data-select-data-attribute="autoplayDelay">
+            <we-button data-select-data-attribute="0">關閉</we-button>
+            <we-button data-select-data-attribute="3000">3 秒</we-button>
+            <we-button data-select-data-attribute="5000">5 秒</we-button>
+            <we-button data-select-data-attribute="8000">8 秒</we-button>
+        </we-select>
+
+    </t>
+</templates>
